@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "name": "listNames-expo-sqlite",
+    "slug": "listNames-expo-sqlite",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
+}
