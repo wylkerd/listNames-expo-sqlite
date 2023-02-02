@@ -38,7 +38,7 @@ interface INames {
 
 
 export default function App() {
-  const [db, setDb] = useState(SQLite.openDatabase('example.db'));
+  const [db, setDb] = useState(SQLite.openDatabase('db.db'));
   const [isLoading, setIsLoading] = useState(true);
   const [names, setNames] = useState<INames[]>([]);
   const [currentName, setCurrentName] = useState<string>('');
@@ -94,7 +94,7 @@ export default function App() {
 
   const addName = () => {
     db.transaction(tx => {
-      tx.executeSql('INSERT INTO names (name) values (?)', [currentName ?  currentName : null],
+      tx.executeSql('INSERT INTO names (name) values (?)', [currentName],
         (txObj, resultSet) => {
           let existingNames: INames[] = [...names];
           existingNames.push({ id: resultSet.insertId || 0, name: currentName});
@@ -153,16 +153,16 @@ export default function App() {
     db.transaction(tx => {
       tx.executeSql('CREATE TABLE IF NOT EXISTS names (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT)')
     });
-
+  
     db.transaction(tx => {
-      tx.executeSql('SELECT * FROM names', [null],
+      tx.executeSql('SELECT * FROM names', [],
         (txObj, resultSet: any) => setNames(resultSet.rows._array),
         (txObj, error) => console.log(error) as any
       );
     });
-
+  
     setIsLoading(false);
-  }, [db]);
+  }, [])
 
   return (
     <View style={styles.container}>
